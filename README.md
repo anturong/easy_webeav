@@ -25,6 +25,19 @@ dotnet publish src/WebDAVConfigurator/WebDAVConfigurator.csproj -c Release -r wi
 publish/WebDAVConfigurator.exe
 ```
 
+## 同类工具对比
+
+| 方案 | 类型 | 图形管理 | 上手难度 | 平台 |
+|---|---|---|---|---|
+| **Easy WebDAV（本工具）** | 独立服务端 | ✅ WPF 界面 | 极低 | Windows |
+| IIS WebDAV | Windows 内置模块 | ❌ 需 IIS 管理器 | 高 | Windows Server |
+| Apache mod_dav | 独立服务端 | ❌ 配置文件 | 高 | 跨平台 |
+| Nginx dav_module | 独立服务端 | ❌ 配置文件 | 高 | 跨平台 |
+| Cerberus FTP Server | 商业产品 | ✅ | 低 | Windows |
+| Serv-U | 商业产品 | ✅ | 低 | Windows |
+
+本工具的优势在于：**Windows 原生 .NET 开发、零外部依赖、WPF 图形配置界面、一键安装服务**，适合快速在 Windows 上搭建 WebDAV 服务。劣势是试验性质，未经安全审计，不适合生产环境。
+
 ## License
 
 MIT
