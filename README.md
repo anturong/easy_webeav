@@ -17,7 +17,18 @@
 - Windows 防火墙规则配置
 - 安装/卸载为 Windows 服务
 
-## 快速开始
+## 下载
+
+从 [Releases](https://github.com/anturong/easy_webeav/releases) 下载最新版本，有两种包可选：
+
+| 包 | 大小 | 说明 |
+|---|---|---|
+| `Easy_WebDAV_v1.0.0_win-x64.zip` | ~67 MB | **自包含版**，已打包 .NET 8 运行时，解压即用，无需额外安装 |
+| `Easy_WebDAV_v1.0.0_win-x64_fd.zip` | ~1.1 MB | **精简版**，需系统已安装 [.NET 8 运行时](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0) |
+
+解压后以管理员身份运行 `WebDAVConfigurator.exe` 即可。
+
+## 自行编译
 
 ```bash
 dotnet publish src/WebDAVService/WebDAVService.csproj -c Release -r win-x64 -o publish
