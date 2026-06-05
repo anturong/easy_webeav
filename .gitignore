@@ -10,6 +10,7 @@ obj/
 
 ## Build output
 publish/
+publish_selfcontained/
 
 ## Runtime
 webdav_config.json

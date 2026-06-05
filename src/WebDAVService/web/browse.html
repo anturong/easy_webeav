@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>{{APP_NAME}} - 文件管理</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -18,7 +21,8 @@
             --tr: .2s ease; --sb: env(safe-area-inset-bottom,0px);
         }
         *{box-sizing:border-box;margin:0;padding:0}
-        body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--bg0);color:var(--t1);overflow:hidden;height:100vh;height:100dvh;-webkit-tap-highlight-color:transparent}
+        html,body{overflow:hidden;height:100%;height:100dvh}
+        body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--bg0);color:var(--t1);-webkit-tap-highlight-color:transparent}
         ::-webkit-scrollbar{width:5px;height:5px}
         ::-webkit-scrollbar-track{background:transparent}
         ::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
@@ -49,7 +53,7 @@
         .loginCard{position:relative;z-index:2;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--rl);padding:36px 28px;width:420px;max-width:92vw;box-shadow:var(--sh);animation:slideUp .5s ease}
         .loginLogo{width:52px;height:52px;background:linear-gradient(135deg,var(--ac),#4cc9f0);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#080a0f;margin-bottom:20px}
         .loginErr{color:var(--dg);font-size:13px;text-align:center;display:none;margin-top:8px}
-        #mainView{display:none;height:100vh;height:100dvh;flex-direction:column}
+        #mainView{display:none;height:100vh;height:100dvh;flex-direction:column;overflow:hidden}
         #mainView.active{display:flex}
         .topbar{display:flex;align-items:center;gap:8px;padding:0 14px;height:52px;min-height:52px;background:var(--bg1);border-bottom:1px solid var(--bd)}
         .topbar .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;flex-shrink:0}
@@ -80,16 +84,16 @@
         .mSrch input:focus{border-color:var(--ac)}
         .mSrch i{position:absolute;left:22px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:13px}
         .fileCon{flex:1;overflow-y:auto;position:relative;-webkit-overflow-scrolling:touch}
-        .lHead{display:grid;grid-template-columns:1fr 65px 70px 120px 80px;gap:8px;padding:10px 16px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid var(--bd);position:sticky;top:0;background:var(--bg2);z-index:5}
-        .fRow{display:grid;grid-template-columns:1fr 65px 70px 120px 80px;gap:8px;padding:10px 16px;font-size:14px;align-items:center;border-bottom:1px solid rgba(42,48,80,.25);cursor:pointer;transition:var(--tr);animation:rowIn .25s ease both}
+        .lHead{display:grid;grid-template-columns:1fr 105px 130px 180px 100px;gap:8px;padding:10px 16px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid var(--bd);position:sticky;top:0;background:var(--bg2);z-index:5}
+        .fRow{display:grid;grid-template-columns:1fr 105px 130px 180px 100px;gap:8px;padding:10px 16px;font-size:14px;align-items:center;border-bottom:1px solid rgba(42,48,80,.25);cursor:pointer;transition:var(--tr);animation:rowIn .25s ease both}
         .fRow:hover{background:var(--bg3)}
         .fRow.sel{background:var(--acd);border-color:transparent}
         .fRow .fN{display:flex;align-items:center;gap:10px;min-width:0}
         .fRow .fIc{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;transition:var(--tr)}
         .fRow:hover .fIc{transform:scale(1.08)}
         .fRow .fTx{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
-        .fRow .fSz,.fRow .fMo{color:var(--t2);font-size:12px}
-        .fRow .fTy{color:var(--t3);font-size:11px}
+        .fRow .fSz,.fRow .fMo{color:var(--t2);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .fRow .fTy{color:var(--t3);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
         .fRow .fAt{display:flex;gap:4px;opacity:0;transition:var(--tr)}
         .fRow:hover .fAt{opacity:1}
         .fRow .fAt button{background:0;border:0;color:var(--t3);cursor:pointer;padding:5px 7px;border-radius:5px;font-size:13px;transition:var(--tr)}
@@ -192,9 +196,17 @@
             .fGi .gNm{font-size:11px}
             .upList{bottom:70px;right:10px;left:10px;max-width:none;width:auto}
             .toastC{top:auto;bottom:70px;right:10px;left:10px;max-width:none;width:auto}
-            .loginCard{padding:28px 20px}
+            .loginCard{padding:24px 18px;width:100%;max-width:92vw}
+            .loginCard .inp{padding:13px 14px;font-size:16px}
+            .loginLogo{width:46px;height:46px;font-size:19px;margin-bottom:16px}
+            .loginCard h1{font-size:20px}
             .cmenu{display:none!important}
             .stBar{display:none}
+        }
+        @media(max-width:400px){
+            .loginCard{padding:20px 14px;max-width:96vw;border-radius:12px}
+            #loginView h1{font-size:18px}
+            .loginCard .btn{padding:14px;font-size:16px}
         }
         @media(min-width:769px){.mBar{display:none!important}.mSrch{display:none!important}}
         @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
@@ -240,7 +252,7 @@
     <input id="fInp" type="file" multiple style="display:none">
     <div class="fileCon" id="fCon">
         <div id="lView">
-            <div class="lHead"><span class="colNm" style="cursor:pointer;user-select:none" onclick="A.toggleSort('name')">名称<span id="sNm"></span></span><span class="colTy" style="cursor:pointer;user-select:none" onclick="A.toggleSort('name')">类型</span><span class="colSz" style="cursor:pointer;user-select:none" onclick="A.toggleSort('size')">大小<span id="sSz"></span></span><span class="colMo" style="cursor:pointer;user-select:none" onclick="A.toggleSort('date')">修改时间<span id="sDt"></span></span><span class="colAt">操作</span></div>
+            <div class="lHead"><span class="colNm" style="cursor:pointer;user-select:none" onclick="A.toggleSort('name')">名称<span id="sNm"></span></span><span class="colTy" style="cursor:pointer;user-select:none" onclick="A.toggleSort('type')">类型<span id="sTy"></span></span><span class="colSz" style="cursor:pointer;user-select:none" onclick="A.toggleSort('size')">大小<span id="sSz"></span></span><span class="colMo" style="cursor:pointer;user-select:none" onclick="A.toggleSort('date')">修改时间<span id="sDt"></span></span><span class="colAt">操作</span></div>
             <div id="lBody"></div>
         </div>
         <div id="gView" class="fGrid" style="display:none"></div>
@@ -393,6 +405,7 @@ var A = {
             var va,vb;
             if(col==='size'){va=a.size||0;vb=b.size||0;return(va-vb)*dir;}
             if(col==='date'){va=a.modified?new Date(a.modified).getTime():0;vb=b.modified?new Date(b.modified).getTime():0;return(va-vb)*dir;}
+            if(col==='type'){va=a.isDir?'':(a.name.split('.').pop()||'').toLowerCase();vb=b.isDir?'':(b.name.split('.').pop()||'').toLowerCase();return va.localeCompare(vb)*dir;}
             return a.name.localeCompare(b.name)*dir;
         });
     },
@@ -405,8 +418,7 @@ var A = {
     tLabel:function(f){
         if(f.isDir)return'文件夹';
         var e=(f.name.split('.').pop()||'').toLowerCase();
-        var t={'jpg':'图片','jpeg':'图片','png':'图片','gif':'图片','bmp':'图片','svg':'图片','webp':'图片','ico':'图片','tiff':'图片','psd':'图片','ai':'图片','mp4':'视频','avi':'视频','mkv':'视频','mov':'视频','wmv':'视频','flv':'视频','webm':'视频','3gp':'视频','m4v':'视频','mp3':'音频','wav':'音频','flac':'音频','aac':'音频','ogg':'音频','wma':'音频','m4a':'音频','opus':'音频','doc':'文档','docx':'文档','txt':'文档','rtf':'文档','odt':'文档','xls':'文档','xlsx':'文档','csv':'文档','ppt':'文档','pptx':'文档','log':'文档','pdf':'PDF','zip':'归档','rar':'归档','7z':'归档','tar':'归档','gz':'归档','bz2':'归档','xz':'归档','zst':'归档','apk':'APK','ipa':'IPA','exe':'程序','msi':'安装包','deb':'安装包','rpm':'安装包','dmg':'镜像','iso':'镜像','img':'镜像'};
-        return t[e]||'文件';
+        return e||'-';
     },
 
     start:function(){
@@ -481,6 +493,7 @@ var A = {
         if(!fs.length){var h='<div class="empty"><i class="fas fa-folder-open"></i><p>'+(sv?'没有匹配的文件':'此文件夹为空')+'</p></div>';document.getElementById('lBody').innerHTML=h;document.getElementById('gView').innerHTML=h;return;}
         self.sortFiles(fs);
         document.getElementById('sNm').innerHTML=self.sInd('name');
+        document.getElementById('sTy').innerHTML=self.sInd('type');
         document.getElementById('sSz').innerHTML=self.sInd('size');
         document.getElementById('sDt').innerHTML=self.sInd('date');
         document.getElementById('lBody').innerHTML=fs.map(function(f,i){return self.rowH(f,i);}).join('');
