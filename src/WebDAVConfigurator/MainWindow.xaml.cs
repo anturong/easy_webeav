@@ -54,6 +54,8 @@ namespace WebDAVConfigurator
         private void LoadConfig()
         {
             _config = WebDAVConfigData.Load();
+            ChkHttp.IsChecked = _config.EnableHttp;
+            HttpPortPanel.IsEnabled = _config.EnableHttp;
             TxtPort.Text = _config.Port.ToString();
             TxtRootDir.Text = _config.RootDir;
             ChkHttps.IsChecked = _config.EnableHttps;
@@ -73,9 +75,17 @@ namespace WebDAVConfigurator
 
         private void UpdateServerLink()
         {
-            var port = int.TryParse(TxtPort.Text, out var p) ? p : _config.Port;
             var displayHost = (_config.Host == "+" || _config.Host == "*" || _config.Host == "0.0.0.0") ? "localhost" : _config.Host;
-            LnkHttp.Text = $"http://{displayHost}:{port}/";
+            if (ChkHttp.IsChecked == true)
+            {
+                var port = int.TryParse(TxtPort.Text, out var p) ? p : _config.Port;
+                LnkHttp.Text = $"http://{displayHost}:{port}/";
+                LnkHttp.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                LnkHttp.Visibility = Visibility.Collapsed;
+            }
             if (ChkHttps.IsChecked == true)
             {
                 var httpsPort = int.TryParse(TxtHttpsPort.Text, out var hp) ? hp : _config.HttpsPort;
@@ -98,6 +108,12 @@ namespace WebDAVConfigurator
         private void ToggleHttps(object sender, RoutedEventArgs e)
         {
             HttpsPanel.IsEnabled = ChkHttps.IsChecked == true;
+            UpdateServerLink();
+        }
+
+        private void ToggleHttp(object sender, RoutedEventArgs e)
+        {
+            HttpPortPanel.IsEnabled = ChkHttp.IsChecked == true;
             UpdateServerLink();
         }
 
@@ -184,18 +200,29 @@ namespace WebDAVConfigurator
         {
             try
             {
+                _config.EnableHttp = ChkHttp.IsChecked == true;
                 _config.Port = int.Parse(TxtPort.Text);
                 _config.RootDir = TxtRootDir.Text;
                 _config.EnableHttps = ChkHttps.IsChecked == true;
                 _config.HttpsPort = int.Parse(TxtHttpsPort.Text);
+
+                if (!_config.EnableHttp && !_config.EnableHttps)
+                {
+                    System.Windows.MessageBox.Show("至少启用 HTTP 或 HTTPS 其中之一。", "提示");
+                    return;
+                }
+
                 _config.Save();
                 UpdateServerLink();
                 Log("配置已保存到文件。", "Green");
 
                 if (Program.IsRunningAsAdmin())
                 {
-                    var (ok, msg) = FirewallHelper.EnsureFirewallRule(_config.Port);
-                    Log(msg, ok ? "Green" : "Red");
+                    if (_config.EnableHttp)
+                    {
+                        var (ok, msg) = FirewallHelper.EnsureFirewallRule(_config.Port);
+                        Log(msg, ok ? "Green" : "Red");
+                    }
                     if (_config.EnableHttps)
                     {
                         var (ok2, msg2) = FirewallHelper.EnsureFirewallRule(_config.HttpsPort);
@@ -203,7 +230,12 @@ namespace WebDAVConfigurator
                     }
                 }
                 else
-                    Log($"防火墙规则需管理员权限，安装服务时会自动处理端口 {_config.Port}", "Yellow");
+                {
+                    var ports = new List<int>();
+                    if (_config.EnableHttp) ports.Add(_config.Port);
+                    if (_config.EnableHttps) ports.Add(_config.HttpsPort);
+                    Log($"防火墙规则需管理员权限，安装服务时会自动处理端口 {string.Join("/", ports)}", "Yellow");
+                }
 
                 System.Windows.MessageBox.Show("配置已保存！\n请重启服务使配置生效。", "成功");
             }

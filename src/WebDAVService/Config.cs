@@ -18,6 +18,7 @@ public class WebDAVConfig
     private static readonly string ConfigFilePath = Path.Combine(BasePath, "webdav_config.json");
 
     public string Host { get; set; } = "+";
+    public bool EnableHttp { get; set; } = true;
     public int Port { get; set; } = 8080;
     public string RootDir { get; set; } = Path.Combine(BasePath, "webdav_share");
     public bool EnableHttps { get; set; } = false;
@@ -50,6 +51,7 @@ public class WebDAVConfig
             var root = doc.RootElement;
 
             if (root.TryGetProperty("host", out var h)) config.Host = h.GetString() ?? config.Host;
+            if (root.TryGetProperty("enable_http", out var en)) config.EnableHttp = en.GetBoolean();
             if (root.TryGetProperty("port", out var p)) config.Port = p.GetInt32();
             if (root.TryGetProperty("root_dir", out var r))
             {
@@ -72,6 +74,12 @@ public class WebDAVConfig
         catch (Exception ex)
         {
             Console.WriteLine($"读取配置失败，使用默认配置: {ex.Message}");
+        }
+
+        if (!config.EnableHttp && !config.EnableHttps)
+        {
+            config.EnableHttp = true;
+            Console.WriteLine("HTTP 和 HTTPS 均已禁用，已自动启用 HTTP。");
         }
 
         config.EnsureRootDir();
@@ -106,6 +114,7 @@ public class WebDAVConfig
         var json = JsonSerializer.Serialize(new
         {
             host = Host,
+            enable_http = EnableHttp,
             port = Port,
             root_dir = RootDir,
             enable_https = EnableHttps,

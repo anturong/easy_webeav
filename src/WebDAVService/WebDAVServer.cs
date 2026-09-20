@@ -94,9 +94,16 @@ public class WebDAVServer
         var certHost = (bindHost == "+" || bindHost == "*") ? "localhost" : bindHost;
 
         // HTTP
-        var httpPrefix = $"http://{bindHost}:{_config.Port}/";
-        _listener.Prefixes.Add(httpPrefix);
-        Log.Information("HTTP: {Prefix}", httpPrefix);
+        if (_config.EnableHttp)
+        {
+            var httpPrefix = $"http://{bindHost}:{_config.Port}/";
+            _listener.Prefixes.Add(httpPrefix);
+            Log.Information("HTTP: {Prefix}", httpPrefix);
+        }
+        else
+        {
+            Log.Information("HTTP 未启用");
+        }
 
         // HTTPS
         if (_config.EnableHttps)
@@ -112,14 +119,23 @@ public class WebDAVServer
             }
             else
             {
-                Log.Warning("HTTPS 初始化失败，仅启动 HTTP\n" +
+                Log.Warning("HTTPS 初始化失败，仅启动 {Available}\n" +
                     "  → 请以管理员身份运行 (创建自签名证书和 netsh 绑定需要管理员权限)\n" +
-                    "  → 或检查端口 {Port} 是否被占用", _config.HttpsPort);
+                    "  → 或检查端口 {Port} 是否被占用",
+                    _config.EnableHttp ? "HTTP" : "(无监听器)",
+                    _config.HttpsPort);
             }
         }
         else
         {
-            Log.Information("HTTPS 未启用，仅启动 HTTP: http://{Bind}:{Port}/", bindHost, _config.Port);
+            Log.Information("HTTPS 未启用，仅启动 {Available}",
+                _config.EnableHttp ? $"HTTP: http://{bindHost}:{_config.Port}/" : "(无监听器)");
+        }
+
+        if (_listener.Prefixes.Count == 0)
+        {
+            Log.Fatal("HTTP 和 HTTPS 均已禁用，服务无法启动。请启用至少一个协议。");
+            return;
         }
 
         try

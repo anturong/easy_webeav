@@ -23,6 +23,8 @@ public class WebDAVConfigData
 
     [JsonPropertyName("host")]
     public string Host { get; set; } = "+";
+    [JsonPropertyName("enable_http")]
+    public bool EnableHttp { get; set; } = true;
     [JsonPropertyName("port")]
     public int Port { get; set; } = 8080;
     [JsonPropertyName("enable_https")]

@@ -44,8 +44,25 @@
                 <StackPanel>
                     <TextBlock Text="基本设置" Foreground="#58a6ff" FontWeight="Bold" FontSize="13" Margin="0,0,0,15"/>
 
-                    <TextBlock Text="监听端口" Margin="0,0,0,5"/>
-                    <TextBox x:Name="TxtPort" Margin="0,0,0,15"/>
+                    <CheckBox x:Name="ChkHttp" Content="启用 HTTP" Checked="ToggleHttp" Unchecked="ToggleHttp"/>
+                    <Grid Margin="0,10,0,15" x:Name="HttpPortPanel">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="HTTP 端口:"/>
+                        <TextBox x:Name="TxtPort" Grid.Column="1"/>
+                    </Grid>
+
+                    <CheckBox x:Name="ChkHttps" Content="启用 HTTPS (自签名证书)" Checked="ToggleHttps" Unchecked="ToggleHttps"/>
+                    <Grid Margin="0,10,0,15" x:Name="HttpsPanel" IsEnabled="False">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="HTTPS 端口:"/>
+                        <TextBox x:Name="TxtHttpsPort" Grid.Column="1"/>
+                    </Grid>
 
                     <TextBlock Text="共享目录" Margin="0,0,0,5"/>
                     <Grid Margin="0,0,0,15">
@@ -57,16 +74,6 @@
                         <Button Grid.Column="1" Content="浏览..." Click="BrowseFolder"
                                 Background="#21262d" Foreground="#e6edf3" BorderBrush="#30363d"
                                 Margin="5,0,0,0" Padding="10,5"/>
-                    </Grid>
-
-                    <CheckBox x:Name="ChkHttps" Content="启用 HTTPS (自签名证书)" Checked="ToggleHttps" Unchecked="ToggleHttps"/>
-                    <Grid Margin="0,10,0,0" x:Name="HttpsPanel" IsEnabled="False">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="HTTPS 端口:"/>
-                        <TextBox x:Name="TxtHttpsPort" Grid.Column="1"/>
                     </Grid>
                 </StackPanel>
             </Border>

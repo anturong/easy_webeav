@@ -11,8 +11,8 @@ public class WebDAVWorker : BackgroundService
         {
             var config = WebDAVConfig.Load();
             Log.Information("WebDAV 服务正在启动...");
-            Log.Information("配置: Host={Host}, Port={Port}, RootDir={RootDir}",
-                config.Host, config.Port, config.RootDir);
+            Log.Information("配置: Host={Host}, HTTP={EnableHttp}({Port}), HTTPS={EnableHttps}({HttpsPort}), RootDir={RootDir}",
+                config.Host, config.EnableHttp, config.Port, config.EnableHttps, config.HttpsPort, config.RootDir);
 
             _server = new WebDAVServer(config);
             await _server.StartAsync(stoppingToken);
