@@ -4,6 +4,8 @@
 
 这是一个个人学习/试验性质的 WebDAV 文件服务器实现，功能不完善，安全性未经审计，**严禁用于任何实际生产环境或公网部署**。
 
+![Easy WebDAV 管理界面与内置网页文件管理器](docs/ui.png)
+
 ## 关于密码
 
 本软件不包含任何硬编码密码。首次运行时会自动生成随机管理员密码并写入 `webdav_config.json` 配置文件，控制台或弹窗会显示初始密码。
@@ -23,8 +25,8 @@
 
 | 包 | 大小 | 说明 |
 |---|---|---|
-| `Easy_WebDAV_v1.0.0_win-x64.zip` | ~67 MB | **自包含版**，已打包 .NET 8 运行时，解压即用，无需额外安装 |
-| `Easy_WebDAV_v1.0.0_win-x64_fd.zip` | ~1.1 MB | **精简版**，需系统已安装 [.NET 8 运行时](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0) |
+| `Easy_WebDAV_v1.1.0_win-x64.zip` | ~67 MB | **自包含版**，已打包 .NET 8 运行时，解压即用，无需额外安装 |
+| `Easy_WebDAV_v1.1.0_win-x64_fd.zip` | ~1.1 MB | **精简版**，需系统已安装 [.NET 8 运行时](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0) |
 
 解压后以管理员身份运行 `WebDAVConfigurator.exe` 即可。
 
